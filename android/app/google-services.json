@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "275012372814",
+    "project_id": "jobify-dummy",
+    "storage_bucket": "jobify-dummy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:275012372814:android:83d5818d8d7daea063761f",
+        "android_client_info": {
+          "package_name": "com.example.jobify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDw5q0CWAztdfPsShdU9SAJzxmaD4kNUhM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
