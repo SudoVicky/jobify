@@ -14,6 +14,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     on<UpdatePreferenceEvent>(_onUpdatePreferenceEvent);
     on<FetchUnselectedCategoriesEvent>(_onFetchUnselectedCategories);
     on<AddCategoryEvent>(_onAddCategoryEvent);
+    on<DeleteCategoryEvent>(_onDeleteCategoryEvent);
   }
 
   // Event handler for fetching preferences
@@ -43,7 +44,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
         if (snapshot.docs.isEmpty) {
           print("No preferences found for this user.");
-          emit(CategoryError('Add your preferences!'));
+          emit(CategoryError('Add your preferences.'));
           return;
         }
 
@@ -104,6 +105,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       FetchUnselectedCategoriesEvent event, Emitter<CategoryState> emit) async {
     try {
       // Get the current user
+      emit(PreferencesLoading());
       final currentUser = authRepository.getCurrentUser();
       if (currentUser != null) {
         // Fetch selected categories for the current user
@@ -140,6 +142,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   Future<void> _onAddCategoryEvent(
       AddCategoryEvent event, Emitter<CategoryState> emit) async {
     try {
+      emit(PreferencesLoading());
       // Add the category to Firebase
       final currentUser = authRepository.getCurrentUser();
       if (currentUser != null) {
@@ -152,10 +155,31 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       }
 
       // After adding, fetch the updated preferences
-      emit(PreferencesLoading());
       add(FetchPreferencesEvent());
     } catch (e) {
       emit(CategoryError(e.toString())); // Emit error if something goes wrong
+    }
+  }
+
+  Future<void> _onDeleteCategoryEvent(
+    DeleteCategoryEvent event,
+    Emitter<CategoryState> emit,
+  ) async {
+    try {
+      emit(PreferencesLoading());
+      final currentUser = authRepository.getCurrentUser();
+      if (currentUser != null) {
+        // Reference to the category document to be deleted
+        await categoryRepository.deleteCategory(
+            currentUser.uid, event.categoryName);
+
+        // Fetch updated preferences after deletion
+        add(FetchPreferencesEvent());
+      } else {
+        emit(CategoryError('User not logged in.'));
+      }
+    } catch (e) {
+      emit(CategoryError('Error deleting category: $e'));
     }
   }
 }

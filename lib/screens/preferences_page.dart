@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jobify/bloc/category/category_bloc.dart';
 import 'package:jobify/bloc/category/category_event.dart';
 import 'package:jobify/bloc/category/category_state.dart';
+import 'package:flutter_slidable/flutter_slidable.dart'; // Ensure this import is correct
 
 class PreferencesPage extends StatelessWidget {
   const PreferencesPage({super.key});
@@ -33,38 +34,55 @@ class PreferencesPage extends StatelessWidget {
                 final categoryName = selectedCategories.keys.elementAt(index);
                 final subcategories = selectedCategories[categoryName]!;
 
-                return Card(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                  child: ExpansionTile(
-                    title: Text(
-                      categoryName,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                return Slidable(
+                  endActionPane: ActionPane(
+                    motion: const DrawerMotion(), // Drawer motion for sliding
+                    children: [
+                      SlidableAction(
+                        onPressed: (BuildContext context) {
+                          // Dispatch DeleteCategoryEvent to remove category from Firestore
+                          context.read<CategoryBloc>().add(DeleteCategoryEvent(
+                                categoryName: categoryName,
+                              ));
+                        },
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                        icon: Icons.delete,
+                        label: 'Delete',
                       ),
-                    ),
-                    // Loop through subcategories for each category
-                    children: subcategories.entries.map((entry) {
-                      return ListTile(
-                        title: Text(entry.key),
-                        trailing: Switch(
-                          value: entry.value,
-                          onChanged: (newValue) {
-                            // Dispatch UpdatePreferenceEvent to update Firestore
-                            print(
-                                "Toggle clicked for ${entry.key} in $categoryName, newValue: $newValue");
-                            context
-                                .read<CategoryBloc>()
-                                .add(UpdatePreferenceEvent(
-                                  categoryName: categoryName,
-                                  fieldName: entry.key,
-                                  newValue: newValue,
-                                ));
-                          },
+                    ],
+                  ),
+                  child: Card(
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    child: ExpansionTile(
+                      title: Text(
+                        categoryName,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
-                      );
-                    }).toList(),
+                      ),
+                      // Loop through subcategories for each category
+                      children: subcategories.entries.map((entry) {
+                        return ListTile(
+                          title: Text(entry.key),
+                          trailing: Switch(
+                            value: entry.value,
+                            onChanged: (newValue) {
+                              // Dispatch UpdatePreferenceEvent to update Firestore
+                              context
+                                  .read<CategoryBloc>()
+                                  .add(UpdatePreferenceEvent(
+                                    categoryName: categoryName,
+                                    fieldName: entry.key,
+                                    newValue: newValue,
+                                  ));
+                            },
+                          ),
+                        );
+                      }).toList(),
+                    ),
                   ),
                 );
               },
@@ -175,10 +193,8 @@ class PreferencesPage extends StatelessWidget {
                         ],
                       );
                     }
-                  } else {
-                    //this loads when the unselectedCategory is on loading
-                    return Center(child: CircularProgressIndicator());
                   }
+                  return Center(child: CircularProgressIndicator());
                 },
               );
             },

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:jobify/repositories/auth_repository.dart';
 
 class CategoryRepository {
   final FirebaseFirestore _firestore;
@@ -71,6 +72,22 @@ class CategoryRepository {
           .set(subcategoryData);
     } catch (e) {
       throw Exception('Error adding category to preferences: $e');
+    }
+  }
+
+  Future<void> deleteCategory(String userId, String categoryName) async {
+    try {
+      // Reference to the selected category of the authenticated user
+      final categoryRef = _firestore
+          .collection('userPreferences')
+          .doc(userId) // User's ID to make it specific
+          .collection('selectedCategories')
+          .doc(categoryName); // Category name as document ID
+      await categoryRef.delete();
+
+      // Delete the category document from Firestore
+    } catch (e) {
+      throw Exception('Error deleting category: $e');
     }
   }
 }

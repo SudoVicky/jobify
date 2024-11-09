@@ -27,6 +27,14 @@ class UpdatePreferenceEvent extends CategoryEvent {
 
 class FetchUnselectedCategoriesEvent extends CategoryEvent {}
 
+class DeleteCategoryEvent extends CategoryEvent {
+  final String categoryName;
+
+  DeleteCategoryEvent({
+    required this.categoryName,
+  });
+}
+
 class AddCategoryEvent extends CategoryEvent {
   final String categoryName;
 
