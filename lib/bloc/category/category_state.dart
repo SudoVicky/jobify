@@ -18,6 +18,12 @@ class PreferencesLoaded extends CategoryState {
   List<Object?> get props => [selectedCategories];
 }
 
+class UnselectedCategoriesLoaded extends CategoryState {
+  final List<MapEntry<String, List<String>>> unselectedCategories;
+
+  UnselectedCategoriesLoaded({required this.unselectedCategories});
+}
+
 class CategoryError extends CategoryState {
   final String message;
 

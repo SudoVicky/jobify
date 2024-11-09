@@ -6,7 +6,7 @@ import 'package:jobify/bloc/auth/auth_state.dart';
 import 'package:jobify/widgets/Text_input.dart';
 import 'package:jobify/widgets/bottom_sheet.dart';
 import 'package:jobify/widgets/button.dart';
-import 'package:jobify/widgets/custom_overlay.dart';
+import 'package:jobify/widgets/loading_overlay.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

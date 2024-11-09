@@ -40,6 +40,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         // Call createUserPreferences to set up the user's preferences document
         await authRepository.createUserPreferences(user.uid);
       }
+      authRepository.signOut();
       emit(AuthRegisterSuccess(message: 'Registration successful!'));
     } catch (e) {
       // Ensure this captures specific error

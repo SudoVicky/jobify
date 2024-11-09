@@ -5,6 +5,7 @@ import 'package:jobify/bloc/auth/auth_event.dart';
 import 'package:jobify/bloc/auth/auth_state.dart';
 import 'package:jobify/bloc/category/category_bloc.dart';
 import 'package:jobify/repositories/auth_repository.dart';
+import 'package:jobify/repositories/category_repository.dart';
 import 'package:jobify/screens/login_page.dart';
 import 'package:jobify/screens/main_screen.dart';
 import 'package:jobify/screens/notification_page.dart';
@@ -12,7 +13,7 @@ import 'package:jobify/screens/preferences_page.dart';
 import 'package:jobify/screens/register_page.dart';
 import 'package:jobify/theme/light_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:jobify/widgets/custom_overlay.dart';
+import 'package:jobify/widgets/loading_overlay.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -36,7 +37,10 @@ class MyApp extends StatelessWidget {
             ..add(CheckAuthStatusEvent()), // Trigger the check on startup
         ),
         BlocProvider<CategoryBloc>(
-          create: (context) => CategoryBloc(authRepository: AuthRepository()),
+          create: (context) => CategoryBloc(
+            authRepository: AuthRepository(),
+            categoryRepository: CategoryRepository(),
+          ),
         ),
       ],
       child: MaterialApp(

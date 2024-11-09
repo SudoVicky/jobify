@@ -24,3 +24,14 @@ class UpdatePreferenceEvent extends CategoryEvent {
   @override
   List<Object> get props => [categoryName, fieldName, newValue];
 }
+
+class FetchUnselectedCategoriesEvent extends CategoryEvent {}
+
+class AddCategoryEvent extends CategoryEvent {
+  final String categoryName;
+
+  AddCategoryEvent({required this.categoryName});
+
+  @override
+  List<Object?> get props => [categoryName];
+}
