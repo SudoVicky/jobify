@@ -33,6 +33,8 @@ class DeleteCategoryEvent extends CategoryEvent {
   DeleteCategoryEvent({
     required this.categoryName,
   });
+  @override
+  List<Object?> get props => [categoryName];
 }
 
 class AddCategoryEvent extends CategoryEvent {

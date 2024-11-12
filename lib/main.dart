@@ -4,8 +4,10 @@ import 'package:jobify/bloc/auth/auth_bloc.dart';
 import 'package:jobify/bloc/auth/auth_event.dart';
 import 'package:jobify/bloc/auth/auth_state.dart';
 import 'package:jobify/bloc/category/category_bloc.dart';
+import 'package:jobify/bloc/notification/notification_bloc.dart';
 import 'package:jobify/repositories/auth_repository.dart';
 import 'package:jobify/repositories/category_repository.dart';
+import 'package:jobify/repositories/notification_repository.dart';
 import 'package:jobify/screens/login_page.dart';
 import 'package:jobify/screens/main_screen.dart';
 import 'package:jobify/screens/notification_page.dart';
@@ -40,6 +42,11 @@ class MyApp extends StatelessWidget {
           create: (context) => CategoryBloc(
             authRepository: AuthRepository(),
             categoryRepository: CategoryRepository(),
+          ),
+        ),
+        BlocProvider<NotificationBloc>(
+          create: (context) => NotificationBloc(
+            notificationRepository: NotificationRepository(),
           ),
         ),
       ],

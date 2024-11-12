@@ -42,6 +42,7 @@ dependencies:
   lottie:
   cloud_firestore:
   flutter_slidable:
+  intl:
 
 dev_dependencies:
   flutter_test:

@@ -49,7 +49,7 @@ class NotificationPage extends StatelessWidget {
               itemCount: filteredCategories.length,
               itemBuilder: (context, index) {
                 final categoryName = filteredCategories.keys.elementAt(index);
-                final subcategories = filteredCategories[categoryName]!;
+                final subCategories = filteredCategories[categoryName]!;
 
                 return Card(
                   margin:
@@ -63,7 +63,7 @@ class NotificationPage extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => SubcategoryPage(
                             categoryName: categoryName,
-                            subcategories: subcategories,
+                            subCategories: subCategories,
                           ),
                         ),
                       );
