@@ -21,7 +21,7 @@ class PreferencesPage extends StatelessWidget {
       body: BlocBuilder<CategoryBloc, CategoryState>(
         builder: (context, state) {
           // Show loading indicator while data is being fetched
-          if (state is PreferencesLoading) {
+          if (state is CategoryLoading) {
             return const Center(child: CircularProgressIndicator());
           }
           // When preferences are successfully loaded

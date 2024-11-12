@@ -1,11 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:jobify/repositories/auth_repository.dart';
 
 class CategoryRepository {
   final FirebaseFirestore _firestore;
 
   CategoryRepository({FirebaseFirestore? firestore})
       : _firestore = firestore ?? FirebaseFirestore.instance;
+
+  Future<Map<String, Map<String, bool>>> fetchAllPreferences(String uid) async {
+    try {
+      final snapshot = await _firestore
+          .collection('userPreferences') // userPreferences collection
+          .doc(uid) // Document ID is user UID
+          .collection('selectedCategories') // selectedCategories sub-collection
+          .get();
+
+      // Map the fetched data to a format suitable for the UI
+      return {
+        for (var doc in snapshot.docs)
+          doc.id: doc.data().map((key, value) => MapEntry(key, value as bool)),
+      };
+    } catch (e) {
+      throw Exception('Error fetching selected categories: $e');
+    }
+  }
 
   // Fetch selected categories for the current user
   Future<List<String>> fetchSelectedCategories(String uid) async {
@@ -88,6 +105,29 @@ class CategoryRepository {
       // Delete the category document from Firestore
     } catch (e) {
       throw Exception('Error deleting category: $e');
+    }
+  }
+
+  Future<Map<String, List<String>>> fetchTrueSelectedCategories(
+      String uid) async {
+    try {
+      final snapshot = await _firestore
+          .collection('userPreferences') // userPreferences collection
+          .doc(uid) // Document ID is user UID
+          .collection('selectedCategories') // selectedCategories sub-collection
+          .get();
+
+      // Map the fetched data to a format suitable for the UI
+      return {
+        for (var doc in snapshot.docs)
+          doc.id: [
+            // Only include subcategory names where the value is true
+            for (var entry in doc.data().entries)
+              if (entry.value == true) entry.key,
+          ],
+      };
+    } catch (e) {
+      throw Exception('Error fetching selected categories: $e');
     }
   }
 }

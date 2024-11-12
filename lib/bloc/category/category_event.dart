@@ -43,3 +43,5 @@ class AddCategoryEvent extends CategoryEvent {
   @override
   List<Object?> get props => [categoryName];
 }
+
+class FetchTrueSelectedEvent extends CategoryEvent {}

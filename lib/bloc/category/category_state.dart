@@ -7,7 +7,7 @@ abstract class CategoryState extends Equatable {
 
 class CategoryInitial extends CategoryState {}
 
-class PreferencesLoading extends CategoryState {}
+class CategoryLoading extends CategoryState {}
 
 class PreferencesLoaded extends CategoryState {
   final Map<String, Map<String, bool>> selectedCategories;
@@ -22,6 +22,12 @@ class UnselectedCategoriesLoaded extends CategoryState {
   final List<MapEntry<String, List<String>>> unselectedCategories;
 
   UnselectedCategoriesLoaded({required this.unselectedCategories});
+}
+
+class TrueSelectedLoaded extends CategoryState {
+  final Map<String, List<String>> filteredCategories;
+
+  TrueSelectedLoaded({required this.filteredCategories});
 }
 
 class CategoryError extends CategoryState {
